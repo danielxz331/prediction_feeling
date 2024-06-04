@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: prediction_feeling
+    container_name: prediction_feeling-app
+    restart: unless-stopped
+    working_dir: /app
+    ports:
+      - 8888:8888
+    volumes:
+      - ./:/app
+    networks:
+      - prediction_feeling
+    user: root
+
+networks:
+  prediction_feeling:
+    driver: bridge
