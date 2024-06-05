@@ -46,12 +46,14 @@ def build_model(model_type='RNN'):
         model.add(SimpleRNN(32))
     elif model_type == 'LSTM':
         model.add(LSTM(32))
+    elif model_type == 'GRU':
+        model.add(GRU(32))
     model.add(Dense(1, activation='sigmoid'))
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     return model
 
 
-models = ['RNN', 'LSTM']
+models = ['RNN', 'LSTM', 'GRU']
 results = []
 
 for model_type in models:
@@ -60,7 +62,18 @@ for model_type in models:
     y_pred = (model.predict(x_test) > 0.5).astype("int32")
     accuracy = accuracy_score(y_test, y_pred)
     results.append([model_type, accuracy])
+    
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    conf_matrix = confusion_matrix(y_test, y_pred)
 
+    print(f"Best Model: {model_type}")
+    print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+    print(f"Precision: {precision}")
+    print(f"Recall: {recall}")
+    print(f"F1 Score: {f1}")
+    print(f"Confusion Matrix:\n {conf_matrix}")
 
     plt.figure(figsize=(12, 4))
 
